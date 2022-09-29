@@ -167,8 +167,8 @@ export class News extends Component {
 
     render() {
         return (
-            <div className='container  my-2' >
-                <h2 className='text-center'>News-Headlines</h2>
+            <div className='container  my-3' >
+                <h1 className='text-center'style={{marginTop:'90px'}} >Headlines related to - {this.capFirstLetter(this.props.category)}</h1>
                 {this.state.loading && <Spinner />}
                 {/* <div className="container d-flex justify-content-between">
                     <button disabled={this.state.page <= 1} type="button" className="btn  btn-warning" onClick={this.handlePrevClick}> &larr; Prev</button>
