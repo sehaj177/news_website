@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { NewsItem } from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 
 export class News extends Component {
@@ -85,32 +87,32 @@ export class News extends Component {
     //         "content": "LONDON -- The British pound fell to all-time low against the U.S. dollar early Monday after Treasury chief Kwasi Kwarteng pledged a sweeping package of tax cuts, fueling concerns about the government… [+5816 chars]"
     //     }
     // ]
-    static defaultProps={
+    static defaultProps = {
         country: 'in',
         pageSize: 8,
         category: 'general'
     }
-    static propTypes={
-        country : PropTypes.string,
+    static propTypes = {
+        country: PropTypes.string,
         pageSize: PropTypes.number,
         category: PropTypes.string
     }
-    capFirstLetter = (string) =>{
-        return string.charAt(0).toUpperCase()+ string.slice(1);
+    capFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
     constructor(props) {
         super(props);
         this.state = {
             articles: [],
             loading: false,
-
+            totalResults:0,
             page: 1
         }
-        document.title=`Sach News- ${this.capFirstLetter(this.props.category)}`;
+        document.title = `Sach News- ${this.capFirstLetter(this.props.category)}`;
     }
-    async updateNews(pageNo){
+    async updateNews(pageNo) {
         const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=6005ac20d2aa473992dcde16ec9b9855&page=${this.state.page}&pageSize=${this.props.pageSize}`;
-        this.setState ({
+        this.setState({
             loading: true
         });
         let data = await fetch(url);
@@ -118,8 +120,9 @@ export class News extends Component {
         console.log(parsedData);
         this.setState({
             articles: parsedData.articles,
-            totalArticles: parsedData.totalResults,
-            loading: false})
+            totalResults: parsedData.totalResults,
+            loading: false
+        })
     }
     async componentDidMount() {
         this.updateNews();
@@ -139,7 +142,7 @@ export class News extends Component {
         //     loading: false
         // })
 
-        this.setState({page:this.state.page-1})
+        this.setState({ page: this.state.page - 1 })
         this.updateNews();
 
     }
@@ -161,25 +164,28 @@ export class News extends Component {
         //         loading: false
         //     })
         // }
-        this.setState({page:this.state.page-1})
+        this.setState({ page: this.state.page + 1 })
         this.updateNews();
     }
 
     render() {
+        let paraStyles = {}
+        if(this.props.mode === 'dark') {
+            paraStyles = { color: 'white', marginTop:'90px' }
+        } else {
+            paraStyles = { color: 'black', marginTop:'90px' }
+        }
         return (
             <div className='container  my-3' >
-                <h1 className='text-center'style={{marginTop:'90px'}} >Headlines related to - {this.capFirstLetter(this.props.category)}</h1>
+                <h1 className='text-center'style={ paraStyles } >Headlines related to - {this.capFirstLetter(this.props.category)}</h1>
                 {this.state.loading && <Spinner />}
-                {/* <div className="container d-flex justify-content-between">
-                    <button disabled={this.state.page <= 1} type="button" className="btn  btn-warning" onClick={this.handlePrevClick}> &larr; Prev</button>
-                    <button type="button" disabled={this.state.page + 1 > Math.ceil(this.state.totalArticles / this.props.pageSize)} className="btn  btn-warning" onClick={this.handleNextClick}>Next &rarr; </button>
-                </div> */}
+               
                 <div className="row"  >
                     {!this.state.loading && this.state.articles.map((element) => {
 
                         return <div className="col-md-4" key={element.url}>
 
-                            <NewsItem title={element.title ? element.title.slice(0, 45) : ""} author={element.author ? element.author:"Unknown"} description={element.description ? element.description.slice(0, 80) : "No information available here. Check the follow up link for the complete news."} imageUrl={element.urlToImage ? element.urlToImage : ""} date={element.publishedAt ? element.publishedAt:"null"} newsUrl={element.url ? element.url : ""} source={element.source.name ? element.source.name:"N/A  "} />
+                            <NewsItem  title={element.title ? element.title.slice(0, 45) : ""} author={element.author ? element.author:"Unknown"} description={element.description ? element.description.slice(0, 80) : "No information available here. Check the follow up link for the complete news."} imageUrl={element.urlToImage ? element.urlToImage : ""} date={element.publishedAt ? element.publishedAt:"null"} newsUrl={element.url ? element.url : ""} source={element.source.name ? element.source.name:"N/A  "} />
                         </div>
                     })}
 

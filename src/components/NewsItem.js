@@ -3,12 +3,19 @@ import React, { Component } from 'react'
 import './NewsItem.css'
 export class NewsItem extends Component {
     
-    render() {
+    
+    render(props) {
         let {title,description,imageUrl,newsUrl,date,author,source} = this.props;
+        let cardStyles = {}
+        if(this.props.mode === 'dark') {
+            cardStyles = { color: 'white', backgroundColor: 'grey'  }
+        } else {
+            cardStyles = { color: 'black', backgroundColor: 'white' }
+        }
         return (
             <div className="card my-3" >
-                <div className="card">
-                <span class="badge  text-bg-info">{source}</span>
+                <div className="card" >
+                <span className="badge  text-bg-info">{source}</span>
 
                 <img src={!imageUrl?"https://cdn-icons-png.flaticon.com/512/16/16096.png":imageUrl} className="card-img-top" alt="..."/>
                     <div className="card-body">

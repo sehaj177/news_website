@@ -5,20 +5,44 @@ import { Link } from 'react-router-dom'
 import './Navbar.css'
 
 export class Navbar extends Component {
+
+
+
     render() {
         return (
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+            <nav className={`navbar navbar-expand-lg navbar-${this.props.mode} bg-${this.props.mode} fixed-top`} >
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/General" >Sach News</Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" >
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div className="collapse navbar-collapse" id="navbarSupportedContent" >
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="#">Home</Link>
+                                <Link className="nav-link active" aria-current="page" to="/">General</Link>
                             </li>
-                            
+                            {/* <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to="Entertainment">Entertainment</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to="Sports">Sports</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to="Business">Business</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to="Health">Health</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to="Science">Science</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to="Sports">Sports</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className="nav-link active" aria-current="page" to="Technology">Technology</Link>
+                            </li> */}
+
                             <li className="nav-item dropdown">
                                 <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Categories
@@ -31,13 +55,17 @@ export class Navbar extends Component {
                                     <li><Link className="dropdown-item" to="/Science">Science</Link></li>
                                     <li><Link className="dropdown-item" to="/Sports">Sports</Link></li>
                                     <li><Link className="dropdown-item" to="/Technology">Technology</Link></li>
-                                    {/* <li><hr className="dropdown-divider"/></li>
-                                    <li><a className="dropdown-item" href="#">Something else here</a></li> */}
+                                    {/* {/* <li><hr className="dropdown-divider"/></li> */}
+                                    
                                 </ul>
                             </li>
-                             {/* ADD COUNTRY SELECTOR AS  A PROP */}
+                            {/* ADD COUNTRY SELECTOR AS  A PROP */}
                         </ul>
-                        
+                        <div className={`form-check form-switch text-${this.props.mode==='light'?'dark':'light'}`}>
+                            <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={this.props.onToggle}/>
+                                <label className="form-check-label" forhtml="flexSwitchCheckDefault">Dark/Light Mode</label>
+                        </div>
+
                     </div>
                 </div>
             </nav>
